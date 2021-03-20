@@ -6,7 +6,7 @@ Análisis de Sentimiento de Twitter en Tiempo real para Seguimiento Temático. A
 # Arquitectura
 ![Architecture](https://raw.github.com/felipeescallon/Analisis-Sentimiento-Twitter-Tiempo-real-Seguimiento-vacunas-Hispanoamerica/main/imagen/Architecture.png)
 
-# Puesta en funcionamiento de un caso en idioma inglés
+#  Aquí una puesta en funcionamiento similar a la de otro caso en idioma inglés
 Cuaderno de Jupyter: [Ver detalles](https://github.com/felipeescallon/TP_PruebaTecnica_CientificoDatos/blob/main/Optional_Case_NLP_Twitter_TP/twitter/DEF_Final_Optional_Case_NLP_Twitter_TP.ipynb)
 
 # Referencia
