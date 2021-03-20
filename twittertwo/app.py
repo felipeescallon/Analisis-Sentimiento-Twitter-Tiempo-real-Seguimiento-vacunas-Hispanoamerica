@@ -67,7 +67,7 @@ app.layout = html.Div(children=[
                     ),
                     html.A(
                         'GitHub',
-                        href='https://github.com/felipeescallon/Analisis-Sentimiento-Twitter-Tiempo-real-para-Seguimiento-Tematico'
+                        href='https://github.com/felipeescallon/Analisis-Sentimiento-Twitter-Tiempo-real-Seguimiento-vacunas-Hispanoamerica'
                     )                    
                 ]
             ),
