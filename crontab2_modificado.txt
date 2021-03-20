@@ -1,0 +1,4 @@
+*/15 * * * * /home/ec2-user/twitter/extract_tweets.sh > /dev/null 2>&1
+* * * * * ( sleep 30 ; /home/ec2-user/twitter/extract_tweets.sh )
+*/17 * * * * /home/ec2-user/twittertwo/extract_tweets.sh > /dev/null 2>&1
+* * * * * ( sleep 30 ; /home/ec2-user/twittertwo/extract_tweets.sh )
