@@ -6,8 +6,10 @@ Análisis de Sentimiento de Twitter en Tiempo real para Seguimiento Temático. A
 http://18.217.133.231:8052/
 
 # Arquitecture
+[![banner](images/Architecture.png)](http://introtodeeplearning.com)
 
-[![banner](images/Architecture.png)]
+This repository contains all of the code and software labs for [MIT 6.S191: Introduction to Deep Learning](http://introtodeeplearning.com)! All lecture slides and videos are available on the course website.
+
 
 
 *Referencia:*
