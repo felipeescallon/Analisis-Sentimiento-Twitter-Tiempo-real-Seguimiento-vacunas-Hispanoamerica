@@ -4,3 +4,7 @@ Análisis de Sentimiento de Twitter en Tiempo real para Seguimiento Temático. A
 **Aplicación corriendo actualmente en una instancia EC2 de AWS que a su vez se alimenta de una base de datos PostgreSQL alojada en una instancia RDS de AWS:**
 
 http://18.217.133.231:8052/
+
+*Referencia:*
+
+Basado y adaptado de la app original de Chulong Li (https://github.com/Chulong-Li/Real-time-Sentiment-Tracking-on-Twitter-for-Brand-Improvement-and-Trend-Recognition)
