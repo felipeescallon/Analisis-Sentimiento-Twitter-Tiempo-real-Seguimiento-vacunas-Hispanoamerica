@@ -134,19 +134,19 @@ def update_graph_live(n):
     # Clean and transform data to enable time series
     result = df.groupby([pd.Grouper(key='created_at', freq='10s'), 'polarity']).count().unstack(fill_value=0).stack().reset_index()
     result = result.rename(columns={"id_str": "Num of '{}' mentions".format(settings.TRACK_WORDS[0]), "created_at":"Time"}) 
-    print("2 result:\n",result.head())
+    #print("2 result:\n",result.head())
     time_series = result["Time"][result['polarity']==0].reset_index(drop=True)
-    print("3 time_series df:\n",time_series.head())
+    #print("3 time_series df:\n",time_series.head())
 
     min10 = datetime.datetime.now() - datetime.timedelta(hours=5, minutes=10) # UTC-5 = GMT-5 (Local time in Bogotá-Colombia)
     min20 = datetime.datetime.now() - datetime.timedelta(hours=5, minutes=20) # UTC-5 = GMT-5 (Local time in Bogotá-Colombia)
 
     neu_num = result[result['Time']>min10]["Num of '{}' mentions".format(settings.TRACK_WORDS[0])][result['polarity']==0].sum()
-    print("4 neu_num:\n",neu_num)
+    #print("4 neu_num:\n",neu_num)
     neg_num = result[result['Time']>min10]["Num of '{}' mentions".format(settings.TRACK_WORDS[0])][result['polarity']==-1].sum()
-    print("5 neg_num:\n",neg_num)
+    #print("5 neg_num:\n",neg_num)
     pos_num = result[result['Time']>min10]["Num of '{}' mentions".format(settings.TRACK_WORDS[0])][result['polarity']==1].sum()
-    print("6 pos_num:\n",pos_num)
+    #print("6 pos_num:\n",pos_num)
     
     # Loading back-up summary data
     # This table must be created before in PgAdmin (it is not the same as twitter2, it is in fact an aux table to show results transformed from the twitter2 table):
@@ -165,11 +165,11 @@ def update_graph_live(n):
     
     query = "SELECT daily_user_num, daily_tweets_num, impressions FROM backup2;" #now the backup table is named " backup2"
     back_up = pd.read_sql(query, engine)
-    print("4 back_up:\n", back_up.head())
+    #print("4 back_up:\n", back_up.head())
     daily_tweets_num = back_up['daily_tweets_num'].iloc[0] + result[-6:-3]["Num of '{}' mentions".format(settings.TRACK_WORDS[0])].sum()
-    print("5 daily_tweets_num:\n", daily_tweets_num)
+    #print("5 daily_tweets_num:\n", daily_tweets_num)
     daily_impressions = back_up['impressions'].iloc[0] + df[df['created_at'] > (datetime.datetime.now() - datetime.timedelta(hours=5, seconds=10))]['user_followers_count'].sum() # UTC-5 = GMT-5 (Local time in Bogotá-Colombia)
-    print("6 daily_impressions:\n",daily_impressions)
+    #print("6 daily_impressions:\n",daily_impressions)
     
     engine.connect()
     mydb = engine.raw_connection()
@@ -194,7 +194,7 @@ def update_graph_live(n):
     percent = (count_now-count_before)/count_before*100
 
     # Create the graph 
-    print("Percent: ", percent)
+    #print("Percent: ", percent)
     children = [
                 html.Div([
                     html.Div([
@@ -393,40 +393,40 @@ def update_graph_bottom_live(n):
     Europa: España
     África: Guinea Ecuatorial
     '''
-    STATES=['Mexico','MEX','Costa Rica','COS','El Salvador','ELS','Guatemala','GUA','Honduras','HON','Nicaragua','NIC','Panama','PAN','Cuba','CUB','Puerto Rico','PUE','Republica Dominicana','REP','Argentina','ARG','Bolivia','BOL','Chile','CHI','Colombia','COL','Ecuador','ECU','Paraguay','PAR','Peru','PER','Uruguay','URU','Venezuela','VEN','Spain','SPA','Guinea Ecuatorial','GUI']
+    COUNTRIES=['Mexico','MEX','Costa Rica','COS','El Salvador','ELS','Guatemala','GUA','Honduras','HON','Nicaragua','NIC','Panama','PAN','Cuba','CUB','Puerto Rico','PUE','Republica Dominicana','REP','Argentina','ARG','Bolivia','BOL','Chile','CHI','Colombia','COL','Ecuador','ECU','Paraguay','PAR','Peru','PER','Uruguay','URU','Venezuela','VEN','Spain','SPA','Guinea Ecuatorial','GUI']
     
     # turning the above list into a dictionary
-    STATE_DICT = dict(itertools.zip_longest(*[iter(STATES)] * 2, fillvalue=""))
-    print('STATE_DICT:', STATE_DICT)
-    INV_STATE_DICT = dict((v,k) for k,v in STATE_DICT.items())
-    print('INV_STATE_DICT:', INV_STATE_DICT)
+    COUNTRY_DICT = dict(itertools.zip_longest(*[iter(COUNTRIES)] * 2, fillvalue=""))
+    #print('COUNTRY_DICT:', COUNTRY_DICT)
+    INV_COUNTRY_DICT = dict((v,k) for k,v in COUNTRY_DICT.items())
+    #print('INV_COUNTRY_DICT:', INV_COUNTRY_DICT)
 
     # Clean and transform data to enable geo-distribution
     is_in_HIS=[] #HIS=HISPANOAMERICA
     geo = df[['user_location']]
     df = df.fillna(" ")
-    print("geo = df[['user_location']]:",geo)
+    #print("geo = df[['user_location']]:",geo)
     for x in df['user_location']:
         check = False
-        for s in STATES:
+        for s in COUNTRIES:
             if s in x:
-                is_in_HIS.append(STATE_DICT[s] if s in STATE_DICT else s)
+                is_in_HIS.append(COUNTRY_DICT[s] if s in COUNTRY_DICT else s)
                 check = True
                 break
         if not check:
             is_in_HIS.append(None)
 
 
-    print('is_in_HIS:',is_in_HIS)
-    geo_dist = pd.DataFrame(is_in_HIS, columns=['State']).dropna().reset_index()
-    geo_dist = geo_dist.groupby('State').count().rename(columns={"index": "Number"}) \
+    #print('is_in_HIS:',is_in_HIS)
+    geo_dist = pd.DataFrame(is_in_HIS, columns=['Country']).dropna().reset_index()
+    geo_dist = geo_dist.groupby('Country').count().rename(columns={"index": "Number"}) \
         .sort_values(by=['Number'], ascending=False).reset_index()
     geo_dist["Log Num"] = geo_dist["Number"].apply(lambda x: math.log(x, 2))
 
 
-    geo_dist['Full State Name'] = geo_dist['State'].apply(lambda x: INV_STATE_DICT[x])
-    geo_dist['text'] = geo_dist['Full State Name'] + '<br>' + 'Num: ' + geo_dist['Number'].astype(str)
-    print('geo_dist:',geo_dist)
+    geo_dist['Full Country Name'] = geo_dist['Country'].apply(lambda x: INV_COUNTRY_DICT[x])
+    geo_dist['text'] = geo_dist['Full Country Name'] + '<br>' + 'Num: ' + geo_dist['Number'].astype(str)
+    #print('geo_dist:',geo_dist)
 
     tokenized_word = word_tokenize(content)
     stop_words=set(stopwords.words("spanish"))# se puede cambiar de idioma dependiendo del país escogido (en este caso Español: spanish)
@@ -477,7 +477,7 @@ def update_graph_bottom_live(n):
                             'data':[
                                 go.Choropleth(
                                     #locations=geo_dist['State'], # Spatial coordinates
-                                    locations=geo_dist['Full State Name'], # Spatial coordinates (FUNCIONÓ!!!)
+                                    locations=geo_dist['Full Country Name'], # Spatial coordinates (FUNCIONÓ!!!)
                                     #locations=['Mexico','Costa Rica','El Salvador','Guatemala','Honduras','Nicaragua','Panama','Cuba','Puerto Rico','Republica Dominicana','Argentina','Bolivia','Chile','Colombia','Ecuador','Paraguay','Peru','Uruguay','Venezuela','Spain','Guinea Ecuatorial'], # Spatial coordinates
                                     z = geo_dist['Log Num'].astype(float), # Data to be color-coded
                                     #locationmode = 'USA-states', # set of locations match entries in `locations`
