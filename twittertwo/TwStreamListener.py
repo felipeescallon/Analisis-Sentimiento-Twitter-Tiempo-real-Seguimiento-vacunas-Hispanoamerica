@@ -26,11 +26,11 @@ class TwStreamListener(tweepy.StreamListener):
     Tweets are known as “status updates”. So the Status class in tweepy has properties describing the tweet.
     https://developer.twitter.com/en/docs/tweets/data-dictionary/overview/tweet-object.html
     '''
-    print("ENTRÓ A: TwStreamListener()")
+    #print("ENTRÓ A: TwStreamListener()")
     #engine = create_engine('postgresql://postgres:password@host:5432/database')#conexion a la base de datos
     #engine = create_engine('postgresql://postgres:postgres@***AWS-RDS***:5432/twitterdb')#conexion a la base de datos
     
-    #DATABASE connection (twitterdb2 is a table inside uao_team18):
+    #DATABASE connection (twitter2 is a table inside uao_team18):
     host = 'xxxx'                                                                 #AWS RDS instance
     port = 5432                                                                   #default port
     user = 'xxxx'                                                                 #database user
@@ -46,7 +46,7 @@ class TwStreamListener(tweepy.StreamListener):
         '''
         Check if this table exits. If not, then create a new one.
         '''
-        print("ENTRÓ A: __init__()")
+        #print("ENTRÓ A: __init__()")
         try:
             self.start_time = time.time()
             self.limit_time = self.runtime
@@ -69,11 +69,11 @@ class TwStreamListener(tweepy.StreamListener):
         '''
         Connecting to the API.
         '''
-        print("ENTRÓ A: connect()")
+        #print("ENTRÓ A: connect()")
         self.auth.set_access_token(credentials.ACCESS_TOKEN, credentials.ACCESS_TOKEN_SECRET)
         self.api = tweepy.API(self.auth)
         self.myStream = tweepy.Stream(auth = self.api.auth, listener = self)
-        print("SALIÓ DE: connect()")
+        #print("SALIÓ DE: connect()")
         return None
 
 
@@ -81,7 +81,7 @@ class TwStreamListener(tweepy.StreamListener):
         '''
         Extract info from tweets
         '''
-        print("ENTRÓ A: on_status()")
+        #print("ENTRÓ A: on_status()")
         if status.retweeted:
             # Avoid retweeted info, and only original tweets will be received
             return True
@@ -94,18 +94,18 @@ class TwStreamListener(tweepy.StreamListener):
         subjectivity = sentiment.subjectivity
         
         user_created_at = status.user.created_at
-        print("User created at: ",user_created_at)
+        #print("User created at: ",user_created_at)
         
-        print("User Location (uncleaned): ", status.user.location)
+        #print("User Location (uncleaned): ", status.user.location)
         user_location = self.deEmojify(status.user.location)
-        print("User Location (cleaned): ",user_location)
+        #print("User Location (cleaned): ",user_location)
         
-        print("User description (uncleaned): ", status.user.description)
+        #print("User description (uncleaned): ", status.user.description)
         user_description = self.deEmojify(status.user.description)
-        print("User description (cleaned): ",user_description)
+        #print("User description (cleaned): ",user_description)
                        
         user_followers_count =status.user.followers_count
-        print("User followers count: ",user_followers_count)
+        #print("User followers count: ",user_followers_count)
         
         longitude = None #initialize
         latitude = None  #initialize
@@ -115,9 +115,9 @@ class TwStreamListener(tweepy.StreamListener):
             latitude = status.coordinates['coordinates'][1]
             
         retweet_count = status.retweet_count
-        print("retweet_count: ",retweet_count)
+        #print("retweet_count: ",retweet_count)
         favorite_count = status.favorite_count
-        print("favorite_count: ",favorite_count)
+        #print("favorite_count: ",favorite_count)
         
         print("status.text: ", status.text)
         print("Long: {}, Lati: {}".format(longitude, latitude))
@@ -170,7 +170,7 @@ class TwStreamListener(tweepy.StreamListener):
         '''
         Since Twitter API has rate limits, stop scraping data as it exceed to the thresold.
         '''
-        print("ENTRÓ A: on_error()")
+        #print("ENTRÓ A: on_error()")
         if status_code == 420:
             # return False to disconnect the stream
             return False
@@ -179,23 +179,23 @@ class TwStreamListener(tweepy.StreamListener):
         ''' 
         Use simple regex statemnents to clean tweet text by removing links and special characters
         '''
-        print("ENTRÓ A: clean_tweet()")
+        #print("ENTRÓ A: clean_tweet()")
         return ' '.join(re.sub("(@[A-Za-z0-9]+)|([^0-9A-Za-z \t])|(\w+:\/\/\S+)", " ", tweet).split()) 
 
     def deEmojify(self,text): #QUITAR EMOJIS
         '''
         Strip all non-ASCII characters to remove emoji characters
         '''
-        print("ENTRÓ A: deEmojify()")
+        #print("ENTRÓ A: deEmojify()")
         if text:
             return text.encode('ascii', 'ignore').decode('ascii')
         else:
             return None
     
     def disconnect(self):#DESCONEXIÓN DE LA BASE DE DATOS
-        print("ENTRÓ A: disconect()")
+        #print("ENTRÓ A: disconect()")
         self.mydb.close()
-        print("EJECUTÓ: disconnect.mydb.close()")
+        #print("EJECUTÓ: disconnect.mydb.close()")
         return print("Stop Streaming")
     
         
@@ -216,9 +216,9 @@ class TwStreamListener(tweepy.StreamListener):
         #All over the world (working properly):
         #self.myStream.filter(languages=["en"], track = settings.TRACK_WORDS[0])
         self.myStream.filter(languages=["es"], track = settings.TRACK_WORDS[0]) #OJO AQUI ES es=español (en las stopwords si es "spanish")
-        print('SE EJECUTÓ: self.myStream.filter(languages=["es"], track = settings.TRACK_WORDS[0]) #sp=español')
+        #print('SE EJECUTÓ: self.myStream.filter(languages=["es"], track = settings.TRACK_WORDS[0]) #sp=español')
         time.sleep(self.runtime)
-        print("SE EJECUTÓ: time.sleep(self.runtime)")
+        #print("SE EJECUTÓ: time.sleep(self.runtime)")
         self.disconnect()
-        print("SE EJECUTÓ: run.disconect()")
+        #print("SE EJECUTÓ: run.disconect()")
         return None
