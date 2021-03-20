@@ -14,8 +14,9 @@ http://18.217.133.231:8052/
 
 *Referencia:*
 
-Basado y adaptado de la app original de Chulong Li (https://github.com/Chulong-Li/Real-time-Sentiment-Tracking-on-Twitter-for-Brand-Improvement-and-Trend-Recognition)
+Basado y adaptado de la app original de ![Chulong Li](https://github.com/Chulong-Li/Real-time-Sentiment-Tracking-on-Twitter-for-Brand-Improvement-and-Trend-Recognition)
 
 
-# Ver más detalles de la puesta en funcionamiento de un caso en idioma inglés muy similar al de Chulong Li:
-https://github.com/felipeescallon/TP_PruebaTecnica_CientificoDatos/blob/main/Optional_Case_NLP_Twitter_TP/twitter/DEF_Final_Optional_Case_NLP_Twitter_TP.ipynb
+# Puesta en funcionamiento de un caso en idioma inglés muy similar al de Chulong Li:
+
+![Ver detalles](https://github.com/felipeescallon/TP_PruebaTecnica_CientificoDatos/blob/main/Optional_Case_NLP_Twitter_TP/twitter/DEF_Final_Optional_Case_NLP_Twitter_TP.ipynb)
