@@ -6,7 +6,7 @@ Análisis de Sentimiento de Twitter en Tiempo real para Seguimiento Temático. A
 http://18.217.133.231:8052/
 
 # Arquitecture
-[!/images/Architecture.png]
+[/images/Architecture.png]
 
 *Referencia:*
 
