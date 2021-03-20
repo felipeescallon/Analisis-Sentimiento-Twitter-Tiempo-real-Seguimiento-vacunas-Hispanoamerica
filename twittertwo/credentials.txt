@@ -1,0 +1,7 @@
+#This is the file that contains the info to create "credentials.py":
+
+API_KEY = 'xxxxxx'
+API_SECRET_KEY = 'xxxxxx'
+
+ACCESS_TOKEN = 'xxxxxx'
+ACCESS_TOKEN_SECRET = 'xxxxxx'
