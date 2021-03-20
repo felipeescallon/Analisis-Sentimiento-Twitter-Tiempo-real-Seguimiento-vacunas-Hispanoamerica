@@ -5,7 +5,7 @@ Análisis de Sentimiento de Twitter en Tiempo real para Seguimiento Temático. A
 
 http://18.217.133.231:8052/
 
-# Arquitecture
+# Arquitectura
 
 ![Architecture](https://raw.github.com/felipeescallon/Analisis-Sentimiento-Twitter-Tiempo-real-Seguimiento-vacunas-Hispanoamerica/main/imagen/Architecture.png)
 
