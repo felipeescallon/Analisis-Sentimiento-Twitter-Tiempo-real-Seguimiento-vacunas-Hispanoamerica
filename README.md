@@ -7,7 +7,7 @@ http://18.217.133.231:8052/
 
 # Arquitecture
 
-![Architecture](https://raw.github.com/felipeescallon/Analisis-Sentimiento-Twitter-Tiempo-real-Seguimiento-vacunas-Hispanoamerica/main/images/Architecture.png)
+![Architecture](https://raw.github.com/felipeescallon/Analisis-Sentimiento-Twitter-Tiempo-real-Seguimiento-vacunas-Hispanoamerica/main/imagen/Architecture.png)
 
 
 
